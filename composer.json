@@ -1,0 +1,30 @@
+{
+    "name": "yireo/Yireo_EmailOverride",
+    "license": "OSL-3.0",
+    "type": "magento-module",
+    "homepage": "https://www.yireo.com/software/magento-extensions/email-override",
+    "description": "Override Magento emails in your app/design/frontend/PACKAGE/THEME/locale folder",
+    "authors": [
+        {
+            "name": "Yireo",
+            "email": "info@yireo.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "magento-hackathon/magento-composer-installer": "*"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/yireo/Yireo_EmailOverride"
+        },
+        {
+            "type": "composer",
+            "url": "http://packages.firegento.com"
+        }
+    ],
+    "extra":{
+        "magento-root-dir": "source/"
+    }
+}
