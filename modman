@@ -1,0 +1,3 @@
+# Modman file
+source/app/code/community/Yireo/EmailOverride app/code/community/Yireo/EmailOverride
+source/app/etc/modules/Yireo_EmailOverride.xml app/etc/modules/
