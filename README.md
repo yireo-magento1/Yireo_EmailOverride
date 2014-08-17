@@ -19,3 +19,4 @@ once you're done.
     modman clone https://github.com/yireo/Yireo_EmailOverride
     modman update Yireo_EmailOverride
 
+Bring your towel.

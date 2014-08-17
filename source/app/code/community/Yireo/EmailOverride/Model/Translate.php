@@ -39,6 +39,7 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
 
         $packageName = $package->getPackageName();
         $theme = $package->getTheme('default');
+        //Mage::log('Yireo_EmailOverride: package = '.$packageName.', theme = '.$theme);
 
         if(empty($packageName)) $packageName = 'default';
         if(empty($theme)) $theme = 'default';
@@ -55,5 +56,26 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
         $ioAdapter->open(array('path' => Mage::getBaseDir('locale')));
  
         return (string) $ioAdapter->read($filePath);
+    }
+
+    /**
+     * Loading data from module translation files
+     *
+     * @param   string $moduleName
+     * @param   string $files
+     * @return  Mage_Core_Model_Translate
+     */
+    protected function _loadModuleTranslation($moduleName, $files, $forceReload=false)
+    {
+        foreach ($files as $file) {
+            $file = $this->_getModuleFilePath($moduleName, $file);
+            $baseFile = basename($file);
+            $overrideFile = Mage::getDesign()->getLocaleFileName($baseFile);
+            if(file_exists($overrideFile)) {
+                $file = $overrideFile;
+            }
+            $this->_addData($this->_getFileData($file), $moduleName, $forceReload);
+        }
+        return $this;
     }
 }
