@@ -14,6 +14,23 @@
 class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
 {
     /**
+     * Retrieve translation file for module
+     *
+     * @param   string $module
+     * @return  string
+     */
+    protected function _getModuleFilePath($module, $fileName)
+    {
+        $localeCode = $this->getLocale();
+        $filePath = $this->getLocaleOverrideFolder().DS.$localeCode.DS.$fileName;
+        if(is_file($filePath)) {
+            return $filePath;
+        }
+
+        return parent::_getModuleFilePath($module, $fileName);
+    }
+
+    /**
      * Retrieve translated template file
      * Try current design package first
      *
@@ -28,6 +45,25 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
             $localeCode = $this->getLocale();
         }
 
+        $filePath = $this->getLocaleOverrideFolder().DS.$localeCode.DS.'template'.DS.$type.DS.$file;
+        if (!file_exists($filePath)) {
+            return parent::getTemplateFile($file, $type, $localeCode);
+        }
+
+        $ioAdapter = new Varien_Io_File();
+        $ioAdapter->open(array('path' => Mage::getBaseDir('locale')));
+ 
+        return (string) $ioAdapter->read($filePath);
+    }
+
+    /**
+     * Custom function to return override folder for locales
+     *
+     * @param null
+     * @return string
+     */
+    protected function getLocaleOverrideFolder()
+    {
         $store = $store = Mage::registry('emailoverride.store');
         if(!empty($this->_config['store'])) {
             $store = $this->_config['store'];
@@ -43,17 +79,7 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
         if(empty($packageName)) $packageName = 'default';
         if(empty($theme)) $theme = 'default';
 
-        $filePath = Mage::getBaseDir('design').DS.'frontend'.DS
-            .$packageName.DS.$theme.DS.'locale'.DS
-            .$localeCode.DS.'template'.DS.$type.DS.$file;
-
-        if (!file_exists($filePath)) {
-            return parent::getTemplateFile($file, $type, $localeCode);
-        }
-
-        $ioAdapter = new Varien_Io_File();
-        $ioAdapter->open(array('path' => Mage::getBaseDir('locale')));
- 
-        return (string) $ioAdapter->read($filePath);
+        $folder = Mage::getBaseDir('design').DS.'frontend'.DS.$packageName.DS.$theme.DS.'locale';
+        return $folder;
     }
 }
