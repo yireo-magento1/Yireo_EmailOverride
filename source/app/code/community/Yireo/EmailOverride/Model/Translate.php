@@ -33,12 +33,8 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
             $store = $this->_config['store'];
         }
 
-        $package = Mage::getSingleton('core/design_package');
-        if(!empty($store)) $package->setStore($store);
-        $package->setArea('frontend');
-
-        $packageName = $package->getPackageName();
-        $theme = $package->getTheme('default');
+        $packageName = Mage::getStoreConfig('design/package/name', $store);
+        $theme = Mage::getStoreConfig('design/theme/locale', $store);
         //Mage::log('Yireo_EmailOverride: package = '.$packageName.', theme = '.$theme);
 
         if(empty($packageName)) $packageName = 'default';
