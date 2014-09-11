@@ -23,7 +23,7 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
     {
         $localeCode = $this->getLocale();
         $filePath = $this->getLocaleOverrideFolder().DS.$localeCode.DS.$fileName;
-        if(is_file($filePath)) {
+        if (!empty($filePath) && !file_exists($filePath)) {
             return $filePath;
         }
 
@@ -46,7 +46,7 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
         }
 
         $filePath = $this->getLocaleOverrideFolder().DS.$localeCode.DS.'template'.DS.$type.DS.$file;
-        if (!file_exists($filePath)) {
+        if (!empty($filePath) && !file_exists($filePath)) {
             return parent::getTemplateFile($file, $type, $localeCode);
         }
 
@@ -69,15 +69,25 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
             $store = $this->_config['store'];
         }
 
-        $package = Mage::getSingleton('core/design_package');
-        if(!empty($store)) $package->setStore($store);
-        $package->setArea('frontend');
+        $packageName = null;
+        $theme = null;
 
-        $packageName = $package->getPackageName();
-        $theme = $package->getTheme('default');
+        if (Mage::app()->getStore()->isAdmin() == false) {
+            $package = Mage::getSingleton('core/design_package');
+            if(!empty($store)) $package->setStore($store);
+            $package->setArea('frontend');
 
-        if(empty($packageName) || in_array($theme, array('base', 'default'))) $packageName = Mage::getStoreConfig('design/package/name', $store);
-        if(empty($theme) || in_array($theme, array('default'))) $theme = Mage::getStoreConfig('design/theme/locale', $store);
+            $packageName = $package->getPackageName();
+            $theme = $package->getTheme('default');
+        }
+
+        if(empty($packageName) || in_array($theme, array('base', 'default'))) {
+            $packageName = Mage::getStoreConfig('design/package/name', $store);
+        }
+
+        if(empty($theme) || in_array($theme, array('default'))) {
+            $theme = Mage::getStoreConfig('design/theme/locale', $store);
+        }
 
         if(empty($packageName)) $packageName = 'default';
         if(empty($theme)) $theme = 'default';
