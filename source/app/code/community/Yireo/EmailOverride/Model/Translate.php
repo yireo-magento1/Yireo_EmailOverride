@@ -21,6 +21,10 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
      */
     protected function _getModuleFilePath($module, $fileName)
     {
+        if (Mage::app()->getStore()->isAdmin() == true) {
+            return parent::_getModuleFilePath($module, $fileName);
+        }
+
         $localeCode = $this->getLocale();
         $filePath = $this->getLocaleOverrideFolder().DS.$localeCode.DS.$fileName;
         if (!empty($filePath) && !file_exists($filePath)) {
