@@ -26,6 +26,10 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
         }
 
         $localeCode = $this->getLocale();
+        if (empty($localeCode)) {
+            return parent::_getModuleFilePath($module, $fileName);
+        }
+
         $filePath = $this->getLocaleOverrideFolder().DS.$localeCode.DS.$fileName;
         if (!empty($filePath) && !file_exists($filePath)) {
             return $filePath;
@@ -78,11 +82,16 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
 
         if (Mage::app()->getStore()->isAdmin() == false) {
             $package = Mage::getSingleton('core/design_package');
+            $originalArea = $package->getArea();
+            $originalStore = $package->getStore();
+
             if(!empty($store)) $package->setStore($store);
             $package->setArea('frontend');
-
             $packageName = $package->getPackageName();
             $theme = $package->getTheme('default');
+
+            $package->setArea($originalArea);
+            $package->setStore($originalStore);
         }
 
         if(empty($packageName) || in_array($theme, array('base', 'default'))) {
