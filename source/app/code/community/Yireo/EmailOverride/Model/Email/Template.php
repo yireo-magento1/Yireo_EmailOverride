@@ -16,7 +16,10 @@ class Yireo_EmailOverride_Model_Email_Template extends Mage_Core_Model_Email_Tem
     public function setDesignConfig(array $config)
     {
         if(isset($config['store'])) {
-            Mage::register('emailoverride.store', $config['store'], true);
+            $store = Mage::registry('emailoverride.store');
+            if(empty($store)) {
+                Mage::register('emailoverride.store', $config['store'], true);
+            }
         }
         return parent::setDesignConfig($config);
     }

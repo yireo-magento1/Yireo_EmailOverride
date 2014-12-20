@@ -30,7 +30,7 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
             return parent::_getModuleFilePath($module, $fileName);
         }
 
-        $filePath = $this->getLocaleOverrideFolder().DS.$localeCode.DS.$fileName;
+        $filePath = $this->getLocaleOverrideFile($localeCode, $fileName);
         if (!empty($filePath) && file_exists($filePath)) {
             return $filePath;
         }
@@ -53,7 +53,7 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
             $localeCode = $this->getLocale();
         }
 
-        $filePath = $this->getLocaleOverrideFolder().DS.$localeCode.DS.'template'.DS.$type.DS.$file;
+        $filePath = $this->getLocaleOverrideFile($localeCode, 'template'.DS.$type.DS.$file);
         if (!empty($filePath) && !file_exists($filePath)) {
             return parent::getTemplateFile($file, $type, $localeCode);
         }
@@ -70,43 +70,14 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
      * @param null
      * @return string
      */
-    protected function getLocaleOverrideFolder()
+    protected function getLocaleOverrideFile($localeCode, $fileName)
     {
-        $store = $store = Mage::registry('emailoverride.store');
+        $store = null;
         if(!empty($this->_config['store'])) {
             $store = $this->_config['store'];
         }
 
-        $packageName = null;
-        $theme = null;
-
-        if (Mage::app()->getStore()->isAdmin() == false) {
-            $package = Mage::getSingleton('core/design_package');
-            $originalArea = $package->getArea();
-            $originalStore = $package->getStore();
-
-            if(!empty($store)) $package->setStore($store);
-            $package->setArea('frontend');
-            $packageName = $package->getPackageName();
-            $theme = $package->getTheme('default');
-
-            $package->setArea($originalArea);
-            $package->setStore($originalStore);
-        }
-
-        if(empty($packageName) || in_array($theme, array('base', 'default'))) {
-            $packageName = Mage::getStoreConfig('design/package/name', $store);
-        }
-
-        if(empty($theme) || in_array($theme, array('default'))) {
-            $theme = Mage::getStoreConfig('design/theme/locale', $store);
-        }
-
-        if(empty($packageName)) $packageName = 'default';
-        if(empty($theme)) $theme = 'default';
-
-        $folder = Mage::getBaseDir('design').DS.'frontend'.DS.$packageName.DS.$theme.DS.'locale';
-        return $folder;
+        return Mage::helper('emailoverride')->getLocaleOverrideFile($localeCode, $fileName, $store);
     }
 
     /**
