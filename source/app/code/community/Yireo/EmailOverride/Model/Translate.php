@@ -100,4 +100,29 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
         }
         return $this;
     }
+
+    /**
+     * Loading current theme translation
+     *
+     * @return Mage_Core_Model_Translate
+     */
+    protected function _loadThemeTranslation($forceReload = false)
+    {
+        // First add fallback package translate.csv files
+        $designPackage = Mage::getSingleton('core/design_package');
+        $fallbacks = Mage::getModel('core/design_fallback')->getFallbackScheme($designPackage->getArea(), $designPackage->getPackageName(), $designPackage->getTheme('layout'));
+        $fallbackFiles = array();
+
+        foreach ($fallbacks as $fallback)
+        {
+            if(!isset($fallback['_package']) || !isset($fallback['_theme'])) continue; // first one is empty for some reason
+            $fallbackFile = $designPackage->getLocaleFileName('translate.csv', array('_package' => $fallback['_package']));
+            $this->_addData($this->_getFileData($fallbackFile), false, $forceReload);
+        }
+
+        // Now add current package translate.csv
+        $file = Mage::getDesign()->getLocaleFileName('translate.csv');
+        $this->_addData($this->_getFileData($file), false, $forceReload);
+        return $this;
+    }
 }
