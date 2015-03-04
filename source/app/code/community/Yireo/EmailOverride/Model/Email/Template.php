@@ -9,7 +9,7 @@
  */
 
 // Allow for an override of Aschroder_SMTPPro_Model_Email_Template
-if (Mage::helper('core')->isModuleEnabled('Aschroder_SMTPPro')) && class_exists('Aschroder_SMTPPro_Model_Email_Template') {
+if (Mage::helper('core')->isModuleEnabled('Aschroder_SMTPPro') && class_exists('Aschroder_SMTPPro_Model_Email_Template')) {
     class Yireo_EmailOverride_Model_Email_Template_Wrapper extends Aschroder_SMTPPro_Model_Email_Template {}
 } else {
     class Yireo_EmailOverride_Model_Email_Template_Wrapper extends Mage_Core_Model_Email_Template {}
