@@ -16,8 +16,10 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
     /**
      * Retrieve translation file for module
      *
-     * @param   string $module
-     * @return  string
+     * @param string $module
+     * @param string $fileName
+     *
+     * @return string
      */
     protected function _getModuleFilePath($module, $fileName)
     {
@@ -67,7 +69,9 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
     /**
      * Custom function to return override folder for locales
      *
-     * @param null
+     * @param string $localeCode
+     * @param string $fileName
+     *
      * @return string
      */
     protected function getLocaleOverrideFile($localeCode, $fileName)
@@ -77,17 +81,20 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
             $store = $this->_config['store'];
         }
 
+        /** @see Yireo_EmailOverride_Helper_Data::getLocalOverrideFile */
         return Mage::helper('emailoverride')->getLocaleOverrideFile($localeCode, $fileName, $store);
     }
 
     /**
      * Loading data from module translation files
      *
-     * @param   string $moduleName
-     * @param   string $files
-     * @return  Mage_Core_Model_Translate
+     * @param string $moduleName
+     * @param string $files
+     * @param bool   $forceReload (optional)
+     *
+     * @return Mage_Core_Model_Translate
      */
-    protected function _loadModuleTranslation($moduleName, $files, $forceReload=false)
+    protected function _loadModuleTranslation($moduleName, $files, $forceReload = false)
     {
         foreach ($files as $file) {
             $file = $this->_getModuleFilePath($moduleName, $file);
@@ -104,6 +111,8 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
     /**
      * Loading current theme translation
      *
+     * @param bool $forceReload (optional)
+     *
      * @return Mage_Core_Model_Translate
      */
     protected function _loadThemeTranslation($forceReload = false)
@@ -111,13 +120,12 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
         // Check for fallback support
         $fallbackModel = Mage::getModel('core/design_fallback');
         if(empty($fallbackModel)) {
-            return parent::_loadThemeTranslation($forceReload);;
+            return parent::_loadThemeTranslation($forceReload);
         }
 
         // First add fallback package translate.csv files
         $designPackage = Mage::getSingleton('core/design_package');
         $fallbacks = $fallbackModel->getFallbackScheme($designPackage->getArea(), $designPackage->getPackageName(), $designPackage->getTheme('layout'));
-        $fallbackFiles = array();
 
         foreach ($fallbacks as $fallback)
         {

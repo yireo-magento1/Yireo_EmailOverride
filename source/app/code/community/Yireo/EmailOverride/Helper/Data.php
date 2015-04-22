@@ -13,6 +13,13 @@
  */
 class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
 {
+    /**
+     * @param string                               $localeCode
+     * @param string                               $fileName
+     * @param string|integer|Mage_Core_Model_Store $store (optional)
+     *
+     * @return string|null
+     */
     public function getLocaleOverrideFile($localeCode, $fileName, $store = null)
     {
         $paths = $this->getLocalePaths($store);
@@ -22,8 +29,15 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
                 return $filePath;
             }
         }
+
+        return null;
     }
 
+    /**
+     * @param string|integer|Mage_Core_Model_Store $store (optional)
+     *
+     * @return array
+     */
     public function getLocalePaths($store = null)
     {
         $paths = array();
@@ -51,6 +65,11 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
         return $paths;
     }
 
+    /**
+     * @param string|integer|Mage_Core_Model_Store $store (optional)
+     *
+     * @return array
+     */
     public function getDesign($store = null)
     {
         if(empty($store)) {
