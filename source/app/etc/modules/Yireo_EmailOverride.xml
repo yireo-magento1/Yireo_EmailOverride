@@ -15,7 +15,7 @@
             <active>true</active>
             <codePool>community</codePool>
             <depends>
-                <Mage_Core />
+                <Mage_Core/>
             </depends>
         </Yireo_EmailOverride>
     </modules>
