@@ -46,13 +46,15 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
         $paths[] = Mage::getBaseDir('design').DS.'frontend'.DS.$design['package'].DS.$design['theme'].DS.'locale';
 
         // Check for fallback support
-        $fallbackModel = Mage::getModel('core/design_fallback');
-        if(!empty($fallbackModel)) {
-            $fallbackSchemes = $fallbackModel->getFallbackScheme('frontend', $design['package'], $design['theme']);
-            if(!empty($fallbackSchemes)) {
-                foreach($fallbackSchemes as $scheme) {
-                    if(!isset($scheme['_package']) || !isset($scheme['_theme'])) continue;
-                    $paths[] = Mage::getBaseDir('design').DS.'frontend'.DS.$scheme['_package'].DS.$scheme['_theme'].DS.'locale';
+        if (class_exists('Mage_Core_Model_Design_Fallback')) {
+            $fallbackModel = Mage::getModel('core/design_fallback');
+            if(!empty($fallbackModel)) {
+                $fallbackSchemes = $fallbackModel->getFallbackScheme('frontend', $design['package'], $design['theme']);
+                if(!empty($fallbackSchemes)) {
+                    foreach($fallbackSchemes as $scheme) {
+                        if(!isset($scheme['_package']) || !isset($scheme['_theme'])) continue;
+                        $paths[] = Mage::getBaseDir('design').DS.'frontend'.DS.$scheme['_package'].DS.$scheme['_theme'].DS.'locale';
+                    }
                 }
             }
         }
