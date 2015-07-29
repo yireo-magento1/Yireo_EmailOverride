@@ -118,17 +118,12 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
     protected function _loadThemeTranslation($forceReload = false)
     {
         // Check for fallback support
-        if (class_exists('Mage_Core_Model_Design_Fallback') == false) {
-            return parent::_loadThemeTranslation($forceReload);
-        }
-
-        // Check for fallback support
-        $fallbackModel = Mage::getModel('core/design_fallback');
-        if(empty($fallbackModel)) {
+        if (Mage::helper('emailoverride')->supportsDesignFallback() == false) {
             return parent::_loadThemeTranslation($forceReload);
         }
 
         // First add fallback package translate.csv files
+        $fallbackModel = Mage::getModel('core/design_fallback');
         $designPackage = Mage::getSingleton('core/design_package');
         $fallbacks = $fallbackModel->getFallbackScheme($designPackage->getArea(), $designPackage->getPackageName(), $designPackage->getTheme('layout'));
 

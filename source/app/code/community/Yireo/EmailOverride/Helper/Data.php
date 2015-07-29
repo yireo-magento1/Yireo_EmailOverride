@@ -46,7 +46,7 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
         $paths[] = Mage::getBaseDir('design').DS.'frontend'.DS.$design['package'].DS.$design['theme'].DS.'locale';
 
         // Check for fallback support
-        if (class_exists('Mage_Core_Model_Design_Fallback')) {
+        if ($this->supportsDesignFallback()) {
             $fallbackModel = Mage::getModel('core/design_fallback');
             if(!empty($fallbackModel)) {
                 $fallbackSchemes = $fallbackModel->getFallbackScheme('frontend', $design['package'], $design['theme']);
@@ -114,5 +114,18 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
             'package' => $packageName,
             'theme' => $theme,
         );
+    }
+
+    /**
+     * @return boolean
+     */
+    public function supportsDesignFallback()
+    {
+        // Check for the right file
+        if (file_exists(BP . '/app/code/core/Mage/Core/Model/Design/Fallback.php') == false) {
+            return false;
+        }
+
+        return true;
     }
 }
