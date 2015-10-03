@@ -106,12 +106,12 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
             $packageName = Mage::getStoreConfig('design/package/name', $store);
         }
         
-        if(empty($theme)) {
-            $theme = Mage::getStoreConfig('design/theme/default', $store);
-        }
-
         if(empty($theme) || in_array($theme, array('default'))) {
             $theme = Mage::getStoreConfig('design/theme/locale', $store);
+        }
+
+        if(empty($theme)) {
+            $theme = Mage::getStoreConfig('design/theme/default', $store);
         }
 
         if(empty($packageName)) $packageName = 'default';
