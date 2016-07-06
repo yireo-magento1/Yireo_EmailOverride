@@ -17,6 +17,8 @@ if (Mage::helper('core')->isModuleEnabled('Aschroder_SMTPPro') && class_exists('
     class Yireo_EmailOverride_Model_Email_Template_Wrapper extends Ebizmarts_Mandrill_Model_Email_Template {}
 }elseif (Mage::helper('core')->isModuleEnabled('FreeLunchLabs_MailGun') && class_exists('FreeLunchLabs_MailGun_Model_Email_Template')) {
     class Yireo_EmailOverride_Model_Email_Template_Wrapper extends FreeLunchLabs_MailGun_Model_Email_Template {}
+}elseif (Mage::helper('core')->isModuleEnabled('SUMOHeavy_Postmark') && class_exists('SUMOHeavy_Postmark_Model_Core_Email_Template')) {
+    class Yireo_EmailOverride_Model_Email_Template_Wrapper extends SUMOHeavy_Postmark_Model_Core_Email_Template {}
 } else {
     class Yireo_EmailOverride_Model_Email_Template_Wrapper extends Mage_Core_Model_Email_Template {}
 }
