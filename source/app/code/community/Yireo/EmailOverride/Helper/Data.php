@@ -82,7 +82,7 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getLocalePathsForFallbackScheme($design)
     {
-        if ($this->supportsDesignFallback()) {
+        if (!$this->supportsDesignFallback()) {
             return array();
         }
 
@@ -170,10 +170,6 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
     public function supportsDesignFallback()
     {
         // Check for the right file
-        if (file_exists(BP . '/app/code/core/Mage/Core/Model/Design/Fallback.php') == false) {
-            return false;
-        }
-
-        return true;
+        return file_exists(BP . '/app/code/core/Mage/Core/Model/Design/Fallback.php');
     }
 }
