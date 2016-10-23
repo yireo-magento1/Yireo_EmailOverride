@@ -177,4 +177,14 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
     {
         return Mage::helper('emailoverride');
     }
+
+    /**
+     * @param int $storeId
+     * @return $this
+     */
+    public function setStoreId($storeId)
+    {
+        $this->_config[self::CONFIG_KEY_STORE] = $storeId;
+        return $this;
+    }
 }
