@@ -66,6 +66,11 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
         // Check for fallback support
         $paths = array_merge($paths, $this->getLocalePathsForFallbackScheme($design));
 
+        // Custom paths
+        $paths[] = Mage::getBaseDir('app') . DS . 'email' . DS . $design['package'] . DS . $design['theme'];
+        $paths[] = Mage::getBaseDir('app') . DS . 'email' . DS . $design['package'] . DS . 'default';
+        $paths[] = Mage::getBaseDir('app') . DS . 'email' . DS . 'base' . DS . 'default';
+
         // Default paths
         $paths[] = Mage::getBaseDir('design') . DS . 'frontend' . DS . $design['package'] . DS . 'default' . DS . 'locale';
         $paths[] = Mage::getBaseDir('design') . DS . 'frontend' . DS . 'default' . DS . 'default' . DS . 'locale';
@@ -101,7 +106,10 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         foreach ($fallbackSchemes as $scheme) {
-            if (!isset($scheme['_package']) || !isset($scheme['_theme'])) continue;
+            if (!isset($scheme['_package']) || !isset($scheme['_theme'])) {
+                continue;
+            }
+
             $paths[] = Mage::getBaseDir('design') . DS . 'frontend' . DS . $scheme['_package'] . DS . $scheme['_theme'] . DS . 'locale';
         }
 
@@ -129,7 +137,10 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
             $originalArea = $package->getArea();
             $originalStore = $package->getStore();
 
-            if (!empty($store)) $package->setStore($store);
+            if (!empty($store)) {
+                $package->setStore($store);
+            }
+
             $package->setArea('frontend');
             $packageName = $package->getPackageName();
             $theme = $package->getTheme('default');
@@ -170,6 +181,10 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
     public function supportsDesignFallback()
     {
         // Check for the right file
-        return file_exists(BP . '/app/code/core/Mage/Core/Model/Design/Fallback.php');
+        if (file_exists(BP . '/app/code/core/Mage/Core/Model/Design/Fallback.php') === false) {
+            return false;
+        }
+
+        return true;
     }
 }
