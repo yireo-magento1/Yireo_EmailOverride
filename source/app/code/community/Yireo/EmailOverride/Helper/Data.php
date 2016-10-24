@@ -127,6 +127,10 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
             $store = Mage::registry('emailoverride.store');
         }
 
+        if (empty($store)) {
+            $store = $this->getDefaultStore();
+        }
+
         $packageName = null;
         $theme = null;
 
@@ -186,5 +190,26 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         return true;
+    }
+
+    /**
+     * @return Mage_Core_Model_Store
+     */
+    protected function getDefaultStore()
+    {
+        $websites = $this->app->getWebsites(true);
+        if (empty($websites[1]) || !is_object($websites[1])) {
+            return 0;
+        }
+
+        /** @var Mage_Core_Model_Website $website */
+        $website = $websites[1];
+        $defaultStore = $website->getDefaultStore();
+
+        if (empty($defaultStore)) {
+            return false;
+        }
+
+        return $defaultStore;
     }
 }
