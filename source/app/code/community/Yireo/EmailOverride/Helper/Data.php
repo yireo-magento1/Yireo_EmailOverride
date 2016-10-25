@@ -197,7 +197,7 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
      */
     protected function getDefaultStore()
     {
-        $websites = $this->app->getWebsites(true);
+        $websites = Mage::app()->getWebsites(true);
         if (empty($websites[1]) || !is_object($websites[1])) {
             return 0;
         }
