@@ -72,6 +72,7 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
         $paths[] = Mage::getBaseDir('app') . DS . 'email' . DS . 'base' . DS . 'default';
 
         // Default paths
+        $paths[] = Mage::getBaseDir('design') . DS . 'frontend' . DS . $design['package'] . DS . $design['theme'] . DS . 'locale';
         $paths[] = Mage::getBaseDir('design') . DS . 'frontend' . DS . $design['package'] . DS . 'default' . DS . 'locale';
         $paths[] = Mage::getBaseDir('design') . DS . 'frontend' . DS . 'default' . DS . 'default' . DS . 'locale';
         $paths[] = Mage::getBaseDir('design') . DS . 'frontend' . DS . 'base' . DS . 'default' . DS . 'locale';
