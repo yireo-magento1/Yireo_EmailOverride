@@ -1,5 +1,5 @@
 {
-    "name": "yireo/yireo_emailoverride",
+    "name": "yireo/magento1-emailoverride",
     "license": "OSL-3.0",
     "type": "magento-module",
     "homepage": "https://www.yireo.com/software/magento-extensions/email-override",
@@ -20,7 +20,7 @@
     "repositories": [
         {
             "type": "composer",
-            "url": "http://packages.firegento.com"
+            "url": "https://packages.firegento.com"
         }
     ],
     "extra":{
