@@ -14,16 +14,16 @@
 class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
 {
     /**
-     * @param string $localeCode
+     * @param string $code
      * @param string $fileName
      * @param string|integer|Mage_Core_Model_Store $store (optional)
      *
      * @return string|null
      */
-    public function getLocaleOverrideFile($localeCode, $fileName, $store = null)
+    public function getLocaleOverrideFile($code, $fileName, $store = null)
     {
         $paths = $this->getLocalePaths($store);
-        $localeCodes = $this->getLocaleCodesAsArray($localeCode);
+        $localeCodes = $this->getLocaleCodesAsArray($code);
 
         foreach ($localeCodes as $localeCode) {
             foreach ($paths as $path) {
@@ -55,6 +55,7 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
      * @param string|integer|Mage_Core_Model_Store $store (optional)
      *
      * @return array
+     * @throws \Mage_Core_Model_Store_Exception
      */
     public function getLocalePaths($store = null)
     {
@@ -107,7 +108,7 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         foreach ($fallbackSchemes as $scheme) {
-            if (!isset($scheme['_package']) || !isset($scheme['_theme'])) {
+            if (!isset($scheme['_package'], $scheme['_theme'])) {
                 continue;
             }
 
@@ -121,6 +122,7 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
      * @param string|integer|Mage_Core_Model_Store $store (optional)
      *
      * @return array
+     * @throws \Mage_Core_Model_Store_Exception
      */
     public function getDesign($store = null)
     {
@@ -135,8 +137,7 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
         $packageName = null;
         $theme = null;
 
-        if (Mage::app()->getStore()->isAdmin() == false) {
-
+        if (Mage::app()->getStore()->isAdmin() === false) {
             /** @var Mage_Core_Model_Design_Package $package */
             $package = Mage::getSingleton('core/design_package');
             $originalArea = $package->getArea();
@@ -154,11 +155,11 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
             $package->setStore($originalStore);
         }
 
-        if (empty($packageName) || in_array($theme, array('base', 'default'))) {
+        if (empty($packageName) || in_array($theme, array('base', 'default'), true)) {
             $packageName = Mage::getStoreConfig('design/package/name', $store);
         }
 
-        if (empty($theme) || in_array($theme, array('default'))) {
+        if (empty($theme) || 'default' === $theme) {
             $theme = Mage::getStoreConfig('design/theme/locale', $store);
         }
 
@@ -176,7 +177,7 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
 
         return array(
             'package' => $packageName,
-            'theme' => $theme,
+            'theme' => $theme
         );
     }
 
@@ -185,16 +186,11 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function supportsDesignFallback()
     {
-        // Check for the right file
-        if (file_exists(BP . '/app/code/core/Mage/Core/Model/Design/Fallback.php') === false) {
-            return false;
-        }
-
-        return true;
+        return file_exists(BP . '/app/code/core/Mage/Core/Model/Design/Fallback.php');
     }
 
     /**
-     * @return Mage_Core_Model_Store
+     * @return int|Mage_Core_Model_Store
      */
     protected function getDefaultStore()
     {

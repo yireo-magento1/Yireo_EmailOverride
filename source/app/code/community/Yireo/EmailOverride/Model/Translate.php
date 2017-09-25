@@ -20,11 +20,12 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
      * @param string $fileName
      *
      * @return string
+     * @throws \Mage_Core_Model_Store_Exception
      */
     protected function _getModuleFilePath($module, $fileName)
     {
         // If this is the backend, we return to the default
-        if ($this->isAdmin() == true) {
+        if ($this->isAdmin()) {
             return parent::_getModuleFilePath($module, $fileName);
         }
 
@@ -54,7 +55,7 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
      */
     public function getTemplateFile($file, $type, $localeCode = null)
     {
-        if (is_null($localeCode) || preg_match('/[^a-zA-Z_]/', $localeCode)) {
+        if ($localeCode === null || preg_match('/[^a-zA-Z_]/', $localeCode)) {
             $localeCode = $this->getLocale();
         }
 
@@ -133,7 +134,7 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
     protected function _loadThemeTranslation($forceReload = false)
     {
         // Check for fallback support
-        if ($this->getModuleHelper()->supportsDesignFallback() == false) {
+        if ($this->getModuleHelper()->supportsDesignFallback() === false) {
             return parent::_loadThemeTranslation($forceReload);
         }
 
@@ -144,14 +145,16 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
         $designPackage = Mage::getSingleton('core/design_package');
 
         // First add fallback package translate.csv files
-        $fallbacks = $fallbackModel->getFallbackScheme($designPackage->getArea(), $designPackage->getPackageName(), $designPackage->getTheme('layout'));
+        $fallbacks = $fallbackModel->getFallbackScheme($designPackage->getArea(), $designPackage->getPackageName(),
+            $designPackage->getTheme('layout'));
 
         foreach ($fallbacks as $fallback) {
-            if (!isset($fallback['_package']) || !isset($fallback['_theme'])) {
+            if (!isset($fallback['_package'], $fallback['_theme'])) {
                 continue;
             }
 
-            $fallbackFile = $designPackage->getLocaleFileName('translate.csv', array('_package' => $fallback['_package']));
+            $fallbackFile = $designPackage->getLocaleFileName('translate.csv',
+                array('_package' => $fallback['_package']));
             $this->_addData($this->_getFileData($fallbackFile), false, $forceReload);
         }
 
@@ -164,10 +167,11 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
 
     /**
      * @return bool
+     * @throws \Mage_Core_Model_Store_Exception
      */
     protected function isAdmin()
     {
-        return (bool) Mage::app()->getStore()->isAdmin();
+        return (bool)Mage::app()->getStore()->isAdmin();
     }
 
     /**
@@ -185,6 +189,7 @@ class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
     public function setStoreId($storeId)
     {
         $this->_config[self::CONFIG_KEY_STORE] = $storeId;
+
         return $this;
     }
 }
