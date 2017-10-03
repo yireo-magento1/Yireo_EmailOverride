@@ -11,7 +11,7 @@
 /**
  * EmailOverride Core model
  */
-class Yireo_EmailOverride_Model_Translate extends Mage_Core_Model_Translate
+class Yireo_EmailOverride_Model_Translate extends Yireo_EmailOverride_Model_Translate_Compatibility
 {
     /**
      * Retrieve translation file for module
