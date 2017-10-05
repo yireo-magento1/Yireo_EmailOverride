@@ -51,6 +51,12 @@ if (Mage::helper('core')->isModuleEnabled('SUMOHeavy_Postmark') && class_exists(
     }
 }
 
+if (Mage::helper('core')->isModuleEnabled('Fooman_EmailAttachments') && class_exists('Fooman_EmailAttachments_Model_Core_Email_Template_Mailer')) {
+    class Yireo_EmailOverride_Model_Email_Template_Compatibility extends Fooman_EmailAttachments_Model_Core_Email_Template_Mailer
+    {
+    }
+}
+
 if (!class_exists('Yireo_EmailOverride_Model_Email_Template_Compatibility', false)) {
     class Yireo_EmailOverride_Model_Email_Template_Compatibility extends Mage_Core_Model_Email_Template
     {
