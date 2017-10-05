@@ -12,7 +12,9 @@ if (Mage::helper('core')->isModuleEnabled('Fishpig_Wordpress') && class_exists('
     class Yireo_EmailOverride_Model_Translate_Compatibility extends Fishpig_Wordpress_Model_Translate
     {
     }
-} else {
+}
+
+if (!class_exists('Yireo_EmailOverride_Model_Translate_Compatibility', false)) {
     class Yireo_EmailOverride_Model_Translate_Compatibility extends Mage_Core_Model_Translate
     {
     }

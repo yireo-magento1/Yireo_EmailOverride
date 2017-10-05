@@ -39,7 +39,7 @@ class Yireo_EmailOverride_Model_Email_Template extends Yireo_EmailOverride_Model
      *
      * @return  Mage_Core_Model_Email_Template
      */
-    public function sendTransactional($templateId, $sender, $email, $name, array $vars = array(), $storeId = null)
+    public function sendTransactional($templateId, $sender, $email, $name, $vars = array(), $storeId = null)
     {
         /** @var Yireo_EmailOverride_Model_Translate $translator */
         $translator = Mage::app()->getTranslator();

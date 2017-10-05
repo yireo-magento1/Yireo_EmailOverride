@@ -9,35 +9,49 @@
  */
 
 // Allow for an override of Aschroder_SMTPPro_Model_Email_Template
-if (class_exists('Aschroder_SMTPPro_Model_Email_Template') && Mage::helper('core')->isModuleEnabled('Aschroder_SMTPPro')) {
+if (Mage::helper('core')->isModuleEnabled('Aschroder_SMTPPro') && class_exists('Aschroder_SMTPPro_Model_Email_Template')) {
     class Yireo_EmailOverride_Model_Email_Template_Compatibility extends Aschroder_SMTPPro_Model_Email_Template
     {
     }
-} elseif (class_exists('Aschroder_Email_Model_Email_Template') && Mage::helper('core')->isModuleEnabled('Aschroder_Email')) {
+}
+
+if (Mage::helper('core')->isModuleEnabled('Aschroder_Email') && class_exists('Aschroder_Email_Model_Email_Template')) {
     class Yireo_EmailOverride_Model_Email_Template_Compatibility extends Aschroder_Email_Model_Email_Template
     {
     }
-} elseif (class_exists('Ebizmarts_Mandrill_Model_Email_Template') && Mage::helper('core')->isModuleEnabled('Ebizmarts_Mandrill')) {
+}
+
+if (Mage::helper('core')->isModuleEnabled('Ebizmarts_Mandrill') && class_exists('Ebizmarts_Mandrill_Model_Email_Template')) {
     class Yireo_EmailOverride_Model_Email_Template_Compatibility extends Ebizmarts_Mandrill_Model_Email_Template
     {
     }
-} elseif (class_exists('Ebizmarts_MailChimp_Model_Email_Template') && Mage::helper('core')->isModuleEnabled('Ebizmarts_MailChimp')) {
+}
+
+if (Mage::helper('core')->isModuleEnabled('Ebizmarts_MailChimp') && class_exists('Ebizmarts_MailChimp_Model_Email_Template')) {
     class Yireo_EmailOverride_Model_Email_Template_Compatibility extends Ebizmarts_MailChimp_Model_Email_Template
     {
     }
-} elseif (class_exists('FreeLunchLabs_MailGun_Model_Email_Template') && Mage::helper('core')->isModuleEnabled('FreeLunchLabs_MailGun')) {
+}
+
+if (Mage::helper('core')->isModuleEnabled('FreeLunchLabs_MailGun') && class_exists('FreeLunchLabs_MailGun_Model_Email_Template')) {
     class Yireo_EmailOverride_Model_Email_Template_Compatibility extends FreeLunchLabs_MailGun_Model_Email_Template
     {
     }
-} elseif (class_exists('Mirasvit_EmailSmtp_Model_Email_Template') && Mage::helper('core')->isModuleEnabled('Mirasvit_EmailSmtp')) {
+}
+
+if (Mage::helper('core')->isModuleEnabled('Mirasvit_EmailSmtp') && class_exists('Mirasvit_EmailSmtp_Model_Email_Template')) {
     class Yireo_EmailOverride_Model_Email_Template_Compatibility extends Mirasvit_EmailSmtp_Model_Email_Template
     {
     }
-} elseif (class_exists('SUMOHeavy_Postmark_Model_Core_Email_Template') && Mage::helper('core')->isModuleEnabled('SUMOHeavy_Postmark')) {
+}
+
+if (Mage::helper('core')->isModuleEnabled('SUMOHeavy_Postmark') && class_exists('SUMOHeavy_Postmark_Model_Core_Email_Template')) {
     class Yireo_EmailOverride_Model_Email_Template_Compatibility extends SUMOHeavy_Postmark_Model_Core_Email_Template
     {
     }
-} else {
+}
+
+if (!class_exists('Yireo_EmailOverride_Model_Email_Template_Compatibility', false)) {
     class Yireo_EmailOverride_Model_Email_Template_Compatibility extends Mage_Core_Model_Email_Template
     {
     }
