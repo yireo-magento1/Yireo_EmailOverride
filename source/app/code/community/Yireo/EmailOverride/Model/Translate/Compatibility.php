@@ -8,7 +8,7 @@
  * @license     Open Source License (OSL v3)
  */
 
-if (class_exists('Fishpig_Wordpress_Model_Translate') && Mage::helper('core')->isModuleEnabled('Fishpig_Wordpress')) {
+if (Mage::helper('core')->isModuleEnabled('Fishpig_Wordpress') && class_exists('Fishpig_Wordpress_Model_Translate')) {
     class Yireo_EmailOverride_Model_Translate_Compatibility extends Fishpig_Wordpress_Model_Translate
     {
     }
