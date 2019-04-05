@@ -103,7 +103,7 @@ class Yireo_EmailOverride_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         $fallbackSchemes = $fallbackModel->getFallbackScheme('frontend', $design['package'], $design['theme']);
-        if (!empty($fallbackSchemes)) {
+        if (empty($fallbackSchemes)) {
             return array();
         }
 
