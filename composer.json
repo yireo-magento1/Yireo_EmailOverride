@@ -2,7 +2,7 @@
     "name": "yireo/magento1-emailoverride",
     "license": "OSL-3.0",
     "type": "magento-module",
-    "homepage": "https://www.yireo.com/software/magento-extensions/email-override",
+    "homepage": "https://github.com/yireo/Yireo_EmailOverride",
     "description": "Override Magento emails in your app/design/frontend/PACKAGE/THEME/locale folder",
     "authors": [
         {
@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=7.0.0"
     },
     "require-dev":{
         "phpunit/phpunit":"*",
